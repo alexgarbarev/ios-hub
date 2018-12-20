@@ -10,7 +10,6 @@
 #import <TyphoonRestClient/TyphoonRestClientErrors.h>
 #import "CCValidationErrorToBugfenderPostProcessor.h"
 #import "TRCRequest.h"
-#import "NSError+CCTableFormManager.h"
 #import "CCMacroses.h"
 
 @protocol CCBugfenderClass <NSObject>
@@ -33,7 +32,7 @@
         NSString *body = [NSString stringWithFormat:@"***%@***\n\nIncorrect response:\n```%@\n```", responseError.localizedDescription, responseError.userInfo[TyphoonRestClientErrorKeyFullDescription]];
         DDLogError(@"Response Validation Error(/%@): %@", [request path], responseError.localizedDescription);
         [[self bugfenderClass] sendIssueWithTitle:title text:body];
-        return [NSError errorWithLocalizedDescription:@"Server returned unexpected result. Issue reported."];
+        return [NSError errorWithDomain:@"BugfenderPostProcessor" code:0 userInfo:@{ NSLocalizedDescriptionKey : @"Server returned unexpected result. Issue reported."}];
     }
 
     return responseError;
